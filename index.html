@@ -478,19 +478,10 @@
       btn.disabled = true;
 
       try {
-        const res = await fetch('https://api.beehiiv.com/v2/publications/pub_13bb0516-6a8a-4ede-bd2f-e614c8aeb6da/subscriptions', {
+        const res = await fetch('https://curly-pond-0efb.padelcities.workers.dev/', {
           method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': 'Bearer 8xAqhUKePtxd8YgsDBMqSFab09FdEaLfUXmbCzN0DLq1Vf2iJp0a3w8vFc4smiDq'
-          },
-          body: JSON.stringify({
-            email: email,
-            reactivate_existing: false,
-            send_welcome_email: true,
-            utm_source: 'website',
-            utm_medium: 'organic'
-          })
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email: email })
         });
 
         if (res.ok) {
@@ -498,7 +489,7 @@
           btn.style.display = 'none';
           feedback.style.color = 'rgba(255,255,255,0.75)';
           feedback.style.fontStyle = 'italic';
-          feedback.textContent = 'Welcome to the club. Check your inbox.';
+          feedback.textContent = 'You\'re in. Welcome to Padel Cities.';
         } else {
           feedback.style.color = 'rgba(255,255,255,0.5)';
           feedback.textContent = 'Something went wrong. Please try again.';
