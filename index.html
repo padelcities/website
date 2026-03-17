@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Padel Cities</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=EB+Garamond:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --cream: #EDEAE3;
+      --charcoal: #4A4743;
+      --charcoal-light: #7A7572;
+      --black: #1C1A18;
+      --white: #FAFAF8;
+      --mid-grey: #888380;
+    }
+
+    html, body {
+      height: 100%;
+      width: 100%;
+      overflow: hidden;
+      background: var(--cream);
+      color: var(--charcoal);
+    }
+
+    .page {
+      height: 100vh;
+      width: 100vw;
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* HEADER */
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      padding: 2rem 3rem 1.5rem;
+      z-index: 10;
+      animation: fadeDown 0.8s ease both;
+    }
+
+    .logo-text {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(0.85rem, 1.1vw, 1.1rem);
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--charcoal);
+      font-weight: 400;
+    }
+
+    .nav-instagram {
+      font-family: 'EB Garamond', serif;
+      font-size: clamp(0.75rem, 0.9vw, 0.9rem);
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--charcoal-light);
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+    .nav-instagram:hover { color: var(--black); }
+
+    /* MAIN */
+    main {
+      display: grid;
+      grid-template-columns: 45% 1fr;
+      height: 100%;
+      overflow: hidden;
+      position: relative;
+    }
+
+    /* no vertical rule */
+
+    /* LEFT IMAGE */
+    .col-image {
+      padding: 0 2rem 0 3rem;
+      overflow: hidden;
+      animation: fadeUp 1s ease 0.2s both;
+    }
+
+    .image-frame {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+    }
+
+    .image-placeholder {
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, #d4cfc7 0%, #c4bfb6 40%, #b8b2a8 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+
+    .image-placeholder::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(28,26,24,0.3) 0%, transparent 50%);
+    }
+
+    .image-label {
+      font-family: 'EB Garamond', serif;
+      font-size: 0.75rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.6);
+      position: relative;
+      z-index: 1;
+    }
+
+    /* RIGHT CONTENT */
+    .col-content {
+      display: grid;
+      grid-template-rows: 1fr auto;
+      padding: 0 3rem 0 2.5rem;
+      gap: 1.5rem;
+      overflow: hidden;
+    }
+
+    .quote-section {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding-bottom: 1rem;
+      animation: fadeUp 1s ease 0.4s both;
+    }
+
+    .quote-eyebrow {
+      font-family: 'EB Garamond', serif;
+      font-size: clamp(0.65rem, 0.8vw, 0.8rem);
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--charcoal-light);
+      margin-bottom: 1.2rem;
+    }
+
+    .quote-text {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.8rem, 3.5vw, 3.8rem);
+      line-height: 1.08;
+      color: var(--black);
+      font-weight: 400;
+      margin-bottom: 1.2rem;
+      letter-spacing: -0.01em;
+    }
+
+    .quote-text em {
+      font-style: italic;
+      color: var(--charcoal-light);
+    }
+
+    .quote-subtext {
+      font-family: 'EB Garamond', serif;
+      font-size: clamp(0.85rem, 1.1vw, 1.05rem);
+      line-height: 1.65;
+      color: var(--charcoal-light);
+      max-width: 38ch;
+      font-style: italic;
+    }
+
+    /* JOIN THE CLUB */
+    .subscription-section {
+      background: var(--black);
+      padding: clamp(1.8rem, 3vh, 3rem) clamp(1.5rem, 2.5vw, 2.5rem);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 2rem;
+      animation: fadeUp 1s ease 0.6s both;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .subscription-section::after {
+      content: 'JOIN';
+      position: absolute;
+      right: -0.05em;
+      top: 50%;
+      transform: translateY(-50%);
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(4rem, 8vw, 9rem);
+      font-weight: 700;
+      color: rgba(255,255,255,0.04);
+      line-height: 1;
+      pointer-events: none;
+      letter-spacing: -0.03em;
+      user-select: none;
+    }
+
+    .subscription-label {
+      font-family: 'EB Garamond', serif;
+      font-size: clamp(0.6rem, 0.75vw, 0.75rem);
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      color: var(--mid-grey);
+      margin-bottom: 0.5rem;
+    }
+
+    .subscription-headline {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.1rem, 1.8vw, 1.8rem);
+      color: var(--white);
+      font-weight: 400;
+      line-height: 1.15;
+    }
+
+    .subscription-headline strong {
+      font-weight: 700;
+      font-style: italic;
+    }
+
+    .subscription-form {
+      display: flex;
+      gap: 0;
+      flex-shrink: 0;
+      position: relative;
+      z-index: 1;
+    }
+
+    .subscription-input {
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-right: none;
+      padding: 0.75rem 1.1rem;
+      font-family: 'EB Garamond', serif;
+      font-size: 0.9rem;
+      color: var(--white);
+      outline: none;
+      width: clamp(140px, 14vw, 210px);
+      transition: border-color 0.3s ease, background 0.3s ease;
+    }
+
+    .subscription-input::placeholder {
+      color: rgba(255,255,255,0.25);
+      font-style: italic;
+    }
+
+    .subscription-input:focus {
+      border-color: rgba(255,255,255,0.5);
+      background: rgba(255,255,255,0.1);
+    }
+
+    .subscription-btn {
+      background: var(--white);
+      border: 1px solid var(--white);
+      color: var(--black);
+      padding: 0.75rem 1.4rem;
+      font-family: 'EB Garamond', serif;
+      font-size: clamp(0.65rem, 0.8vw, 0.8rem);
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: background 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+      white-space: nowrap;
+      font-weight: 500;
+    }
+
+    .subscription-btn:hover {
+      background: transparent;
+      color: var(--white);
+      border-color: rgba(255,255,255,0.5);
+    }
+
+    /* FOOTER */
+    footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.2rem 3rem;
+      z-index: 10;
+      animation: fadeDown 0.8s ease 0.1s both;
+    }
+
+
+
+    .copyright {
+      font-family: 'EB Garamond', serif;
+      font-size: 0.7rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--charcoal-light);
+    }
+
+    .issue-info {
+      font-family: 'EB Garamond', serif;
+      font-size: 0.7rem;
+      letter-spacing: 0.1em;
+      color: var(--charcoal-light);
+      font-style: italic;
+    }
+
+    /* ANIMATIONS */
+    @keyframes fadeDown {
+      from { opacity: 0; transform: translateY(-12px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(18px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── MOBILE ── */
+    @media (max-width: 768px) {
+      html, body { overflow: auto; }
+
+      .page {
+        height: auto;
+        min-height: 100vh;
+        overflow: visible;
+        grid-template-rows: auto auto auto;
+      }
+
+      header {
+        padding: 1.5rem 1.5rem 1rem;
+      }
+
+      .nav-instagram { display: none; }
+
+      main {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto auto;
+        height: auto;
+        overflow: visible;
+      }
+
+      .col-image {
+        padding: 1rem 1.5rem 0;
+        height: 60vw;
+        min-height: 220px;
+        order: 2;
+      }
+
+      .col-content {
+        order: 1;
+        padding: 0.5rem 1.5rem 0;
+        grid-template-rows: auto auto;
+        gap: 1.5rem;
+      }
+
+      .quote-text {
+        font-size: clamp(2rem, 9vw, 2.8rem);
+      }
+
+      .subscription-section {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+      }
+
+      .subscription-form { width: 100%; }
+
+      .subscription-input {
+        flex: 1;
+        width: 100%;
+      }
+
+      footer {
+        padding: 1.2rem 1.5rem;
+      }
+
+
+
+      .issue-info { display: none; }
+
+      .footer-instagram {
+        font-family: 'Playfair Display', serif;
+        font-size: 0.85rem;
+        font-weight: 700;
+        letter-spacing: 0.05em;
+        color: var(--charcoal);
+      }
+    }
+
+    @media (min-width: 769px) {
+      .footer-instagram { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+
+    <header>
+      <span class="logo-text">Padel Cities</span>
+      <a href="#" class="nav-instagram">Instagram</a>
+    </header>
+
+    <main>
+
+      <div class="col-image">
+        <div class="image-frame">
+          <div class="image-placeholder">
+            <span class="image-label">Image</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-content">
+
+        <div class="quote-section">
+<h1 class="quote-text">The game that<br><em>reshapes</em><br>our cities.</h1>
+          <p class="quote-subtext">A look at padel as an urban, cultural and social phenomenon redefining spaces and communities.</p>
+        </div>
+
+        <div class="subscription-section">
+          <div class="subscription-copy">
+            <p class="subscription-label">Members Only</p>
+            <p class="subscription-headline">Join the <strong>inner circle.</strong></p>
+          </div>
+          <div class="subscription-form">
+            <input class="subscription-input" type="email" placeholder="your@email.com" />
+            <button class="subscription-btn">Join Now</button>
+          </div>
+        </div>
+
+      </div>
+    </main>
+
+    <footer>
+      <span class="copyright">&copy; 2025 Padel Cities</span>
+<span class="footer-instagram">Instagram</span>
+    </footer>
+
+  </div>
+</body>
+</html>
