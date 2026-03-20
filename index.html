@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Padel Cities</title>
-  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&display=swap" rel="stylesheet" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -88,28 +88,111 @@
       position: relative;
     }
 
-    /* no vertical rule */
-
-    /* LEFT IMAGE */
+    /* LEFT — GRID */
     .col-image {
       padding: 0 2rem 0 3rem;
       overflow: hidden;
       animation: fadeUp 1s ease 0.2s both;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
     }
 
-    .image-frame {
+    /* 3×3 grid — cells enforce 4:5 ratio */
+    .ig-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 4px;
+      width: 100%;
+    }
+
+    .ig-cell {
+      position: relative;
+      overflow: hidden;
+      aspect-ratio: 4 / 5;
+    }
+
+    .ig-cell a {
+      display: block;
       width: 100%;
       height: 100%;
-      overflow: hidden;
+      position: relative;
     }
 
-    .image-photo {
+    .ig-cell img {
       width: 100%;
       height: 100%;
       object-fit: cover;
       object-position: center;
       display: block;
+      transition: transform 0.5s ease, filter 0.4s ease;
     }
+
+    /* hover overlay — on the <a> so it never blocks clicks */
+    .ig-cell a::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: rgba(28, 26, 24, 0);
+      transition: background 0.35s ease;
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    .ig-cell a:hover::after {
+      background: rgba(28, 26, 24, 0.35);
+    }
+
+    .ig-cell a:hover img {
+      transform: scale(1.06);
+    }
+
+    /* IG icon on hover */
+    .ig-cell .cell-icon {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 2;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      pointer-events: none;
+    }
+
+    .ig-cell a:hover .cell-icon {
+      opacity: 1;
+    }
+
+    .ig-cell .cell-icon svg {
+      width: 1.6rem;
+      height: 1.6rem;
+      stroke: rgba(255,255,255,0.9);
+      fill: none;
+      stroke-width: 1.5;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      filter: drop-shadow(0 1px 4px rgba(0,0,0,0.4));
+    }
+
+    /* grid label below */
+    .ig-grid-label {
+      padding: 0.6rem 0 0;
+      font-family: 'Instrument Serif', serif;
+      font-size: 0.78rem;
+      font-style: italic;
+      color: var(--charcoal-light);
+      letter-spacing: 0.03em;
+      text-align: right;
+      flex-shrink: 0;
+    }
+
+    .ig-grid-label a {
+      color: inherit;
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+    .ig-grid-label a:hover { color: var(--black); }
 
     /* RIGHT CONTENT */
     .col-content {
@@ -144,12 +227,14 @@
     }
 
     .quote-subtext {
-      font-family: 'Instrument Serif', serif;
-      font-size: clamp(0.85rem, 1.1vw, 1.05rem);
-      line-height: 1.65;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(0.95rem, 1.15vw, 1.12rem);
+      font-weight: 300;
+      line-height: 1.7;
       color: var(--charcoal-light);
-      max-width: 38ch;
+      max-width: 30ch;
       font-style: italic;
+      letter-spacing: 0.01em;
     }
 
     /* JOIN THE CLUB */
@@ -159,19 +244,19 @@
       display: flex;
       flex-direction: column;
       justify-content: center;
-      gap: 1.5rem;
+      gap: 1rem;
       animation: fadeUp 1s ease 0.6s both;
       position: relative;
-      overflow: hidden;
+      overflow: visible;
     }
 
     .subscription-headline {
       font-family: 'Instrument Serif', serif;
-      font-size: clamp(1.8rem, 3.5vw, 3.8rem);
+      font-size: clamp(1.6rem, 2.8vw, 3.2rem);
       color: var(--white);
       font-weight: 400;
       line-height: 1.08;
-      margin-bottom: 1.2rem;
+      margin-bottom: 0.6rem;
       letter-spacing: -0.01em;
     }
 
@@ -181,12 +266,14 @@
     }
 
     .subscription-subtext {
-      font-family: 'Instrument Serif', serif;
-      font-size: clamp(0.85rem, 1.1vw, 1.05rem);
-      color: rgba(255,255,255,0.6);
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(0.95rem, 1.15vw, 1.12rem);
+      font-weight: 300;
+      color: rgba(255,255,255,0.62);
       font-style: italic;
-      line-height: 1.65;
-      max-width: 38ch;
+      line-height: 1.7;
+      max-width: 42ch;
+      letter-spacing: 0.01em;
     }
 
     .subscription-form {
@@ -248,6 +335,30 @@
       color: rgba(255,255,255,0.6);
       min-height: 1.2em;
     }
+
+    .subscription-consent {
+      font-family: 'Instrument Serif', serif;
+      font-size: 0.72rem;
+      font-style: italic;
+      color: rgba(255,255,255,0.35);
+      line-height: 1.5;
+      max-width: 38ch;
+      margin-top: -0.5rem;
+    }
+
+    .subscription-consent a {
+      color: rgba(255,255,255,0.5);
+      text-decoration: underline;
+      text-underline-offset: 2px;
+      text-decoration-color: rgba(255,255,255,0.25);
+      transition: color 0.2s ease, text-decoration-color 0.2s ease;
+    }
+
+    .subscription-consent a:hover {
+      color: rgba(255,255,255,0.8);
+      text-decoration-color: rgba(255,255,255,0.5);
+    }
+
     footer {
       display: flex;
       justify-content: space-between;
@@ -282,6 +393,18 @@
       to   { opacity: 1; transform: translateY(0); }
     }
 
+    /* staggered grid cells */
+    .ig-cell { opacity: 0; animation: fadeUp 0.6s ease forwards; }
+    .ig-cell:nth-child(1) { animation-delay: 0.15s; }
+    .ig-cell:nth-child(2) { animation-delay: 0.22s; }
+    .ig-cell:nth-child(3) { animation-delay: 0.29s; }
+    .ig-cell:nth-child(4) { animation-delay: 0.36s; }
+    .ig-cell:nth-child(5) { animation-delay: 0.43s; }
+    .ig-cell:nth-child(6) { animation-delay: 0.50s; }
+    .ig-cell:nth-child(7) { animation-delay: 0.57s; }
+    .ig-cell:nth-child(8) { animation-delay: 0.64s; }
+    .ig-cell:nth-child(9) { animation-delay: 0.71s; }
+
     /* ── MOBILE ── */
     @media (max-width: 768px) {
       html, body { overflow: auto; }
@@ -293,67 +416,38 @@
         grid-template-rows: auto auto auto;
       }
 
-      header {
-        padding: 1.5rem 1.5rem 1rem;
-      }
-
+      header { padding: 1.5rem 1.5rem 1rem; }
       .nav-instagram { display: none; }
 
       main {
-        grid-template-columns: 1fr;
-        grid-template-rows: auto auto;
+        display: flex;
+        flex-direction: column;
         height: auto;
         overflow: visible;
       }
 
-      /* Hide the image column on mobile — it becomes the subscription bg */
-      .col-image {
-        display: none;
-      }
+      /* mobile order: quote → grid → subscribe */
+      .quote-section        { order: 1; padding: 0.5rem 1.5rem 1rem; }
+      .col-image            { order: 2; padding: 1.5rem 1.5rem 0; }
+      .subscription-section { order: 3; }
 
-      .col-content {
-        order: 1;
-        padding: 0.5rem 1.5rem 0;
-        grid-template-rows: auto auto;
-        gap: 0;
-      }
+      /* unwrap col-content so its children join main's flex flow */
+      .col-content { display: contents; }
 
-      .quote-text {
-        font-size: clamp(2.5rem, 11vw, 3.5rem);
-      }
+      .ig-grid { gap: 3px; }
+      .ig-grid-label { text-align: right; }
 
-      .quote-subtext {
-        font-size: clamp(1.05rem, 4vw, 1.3rem);
-      }
+      .quote-text { font-size: clamp(2.5rem, 11vw, 3.5rem); }
+      .subtext-br { display: none; }
+      .quote-subtext { font-size: clamp(1.05rem, 4vw, 1.3rem); }
 
-      /* Subscription uses image.jpg as background */
       .subscription-section {
         position: relative;
-        background-image: url('image.jpg');
-        background-size: cover;
-        background-position: center;
-        min-height: 70vw;
+        background: var(--black);
         padding: 2.5rem 1.5rem;
       }
 
-      .subscription-section::before {
-        content: '';
-        position: absolute;
-        inset: 0;
-        background: rgba(20, 18, 16, 0.72);
-        z-index: 0;
-      }
-
-      .subscription-copy,
-      .subscription-form,
-      .subscription-feedback {
-        position: relative;
-        z-index: 1;
-      }
-
-      .subscription-headline {
-        font-size: clamp(2.25rem, 10vw, 3.2rem);
-      }
+      .subscription-headline { font-size: clamp(1.8rem, 8vw, 2.8rem); }
 
       .subscription-subtext {
         font-size: clamp(1.05rem, 4vw, 1.3rem);
@@ -361,21 +455,10 @@
       }
 
       .subscription-form { width: 100%; }
+      .subscription-input { flex: 1; width: 100%; font-size: 1.05rem; }
+      .subscription-btn { font-size: 0.95rem; }
 
-      .subscription-input {
-        flex: 1;
-        width: 100%;
-        font-size: 1.05rem;
-      }
-
-      .subscription-btn {
-        font-size: 0.95rem;
-      }
-
-      footer {
-        padding: 1.2rem 1.5rem;
-      }
-
+      footer { padding: 1.2rem 1.5rem; }
       .issue-info { display: none; }
 
       .footer-instagram {
@@ -390,14 +473,90 @@
         gap: 0.4em;
       }
 
-      .copyright {
-        font-size: 1rem;
-      }
+      .copyright { font-size: 1rem; }
     }
 
     @media (min-width: 769px) {
       .footer-instagram { display: none; }
     }
+
+    .subscription-consent {
+      font-family: 'Instrument Serif', serif;
+      font-size: 0.72rem;
+      font-style: italic;
+      color: rgba(255,255,255,0.38);
+      line-height: 1.5;
+      max-width: 420px;
+    }
+
+    .subscription-consent a {
+      color: rgba(255,255,255,0.55);
+      text-decoration: underline;
+      text-underline-offset: 2px;
+      transition: color 0.2s ease;
+    }
+
+    .subscription-consent a:hover {
+      color: rgba(255,255,255,0.85);
+    }
+
+    /* ── COOKIE BANNER ── */
+    #cookie-banner {
+      display: none;
+      position: fixed;
+      bottom: 0; left: 0; right: 0;
+      z-index: 1000;
+      background: var(--black);
+      border-top: 1px solid rgba(255,255,255,0.08);
+      padding: 1.1rem 3rem;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+      animation: fadeUp 0.5s ease both;
+    }
+    #cookie-banner.visible { display: flex; }
+
+    .cookie-text {
+      font-family: 'Instrument Serif', serif;
+      font-size: 0.82rem;
+      font-style: italic;
+      color: rgba(255,255,255,0.5);
+      line-height: 1.65;
+      max-width: 62ch;
+      flex: 1;
+    }
+    .cookie-text a { color: rgba(255,255,255,0.7); text-underline-offset: 2px; }
+    .cookie-text a:hover { color: var(--white); }
+
+    .cookie-actions { display: flex; gap: 0.6rem; flex-shrink: 0; }
+
+    .cookie-btn {
+      font-family: 'Instrument Serif', serif;
+      font-size: 0.8rem;
+      font-style: italic;
+      letter-spacing: 0.04em;
+      padding: 0.5rem 1.2rem;
+      cursor: pointer;
+      border: 1px solid rgba(255,255,255,0.22);
+      background: transparent;
+      color: rgba(255,255,255,0.55);
+      transition: background 0.25s, color 0.25s, border-color 0.25s;
+    }
+    .cookie-btn.accept {
+      background: var(--white);
+      color: var(--black);
+      border-color: var(--white);
+    }
+    .cookie-btn:hover { background: rgba(255,255,255,0.1); color: var(--white); border-color: rgba(255,255,255,0.45); }
+    .cookie-btn.accept:hover { background: rgba(255,255,255,0.88); border-color: rgba(255,255,255,0.88); }
+
+    @media (max-width: 768px) {
+      #cookie-banner { padding: 1.2rem 1.5rem; flex-direction: column; align-items: flex-start; }
+      .cookie-text { max-width: 100%; font-size: 0.9rem; }
+      .cookie-btn { font-size: 0.88rem; padding: 0.55rem 1.1rem; }
+    }
+
   </style>
 </head>
 <body>
@@ -413,29 +572,120 @@
 
     <main>
 
+      <!-- LEFT: 3×3 Instagram grid -->
       <div class="col-image">
-        <div class="image-frame">
-          <img src="image.jpg" alt="Padel Cities" class="image-photo" />
+        <div class="ig-grid" id="igGrid">
+          <!--
+            CÓMO ACTUALIZAR:
+            Reemplazá cada src="ig-01.jpg" con el nombre de tu imagen.
+            También podés cambiar el href de cada <a> al link directo del post de IG.
+            Las imágenes deben estar en la misma carpeta que este index.html.
+          -->
+
+          <div class="ig-cell">
+            <a href="https://www.instagram.com/padelcities" target="_blank" rel="noopener">
+              <img src="ig-01.jpg" alt="Padel Cities — post 1" loading="lazy" />
+              <span class="cell-icon">
+                <svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="0.5" fill="rgba(255,255,255,0.9)" stroke="none"/></svg>
+              </span>
+            </a>
+          </div>
+
+          <div class="ig-cell">
+            <a href="https://www.instagram.com/padelcities" target="_blank" rel="noopener">
+              <img src="ig-02.jpg" alt="Padel Cities — post 2" loading="lazy" />
+              <span class="cell-icon">
+                <svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="0.5" fill="rgba(255,255,255,0.9)" stroke="none"/></svg>
+              </span>
+            </a>
+          </div>
+
+          <div class="ig-cell">
+            <a href="https://www.instagram.com/padelcities" target="_blank" rel="noopener">
+              <img src="ig-03.jpg" alt="Padel Cities — post 3" loading="lazy" />
+              <span class="cell-icon">
+                <svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="0.5" fill="rgba(255,255,255,0.9)" stroke="none"/></svg>
+              </span>
+            </a>
+          </div>
+
+          <div class="ig-cell">
+            <a href="https://www.instagram.com/padelcities" target="_blank" rel="noopener">
+              <img src="ig-04.jpg" alt="Padel Cities — post 4" loading="lazy" />
+              <span class="cell-icon">
+                <svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="0.5" fill="rgba(255,255,255,0.9)" stroke="none"/></svg>
+              </span>
+            </a>
+          </div>
+
+          <div class="ig-cell">
+            <a href="https://www.instagram.com/padelcities" target="_blank" rel="noopener">
+              <img src="ig-05.jpg" alt="Padel Cities — post 5" loading="lazy" />
+              <span class="cell-icon">
+                <svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="0.5" fill="rgba(255,255,255,0.9)" stroke="none"/></svg>
+              </span>
+            </a>
+          </div>
+
+          <div class="ig-cell">
+            <a href="https://www.instagram.com/padelcities" target="_blank" rel="noopener">
+              <img src="ig-06.jpg" alt="Padel Cities — post 6" loading="lazy" />
+              <span class="cell-icon">
+                <svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="0.5" fill="rgba(255,255,255,0.9)" stroke="none"/></svg>
+              </span>
+            </a>
+          </div>
+
+          <div class="ig-cell">
+            <a href="https://www.instagram.com/padelcities" target="_blank" rel="noopener">
+              <img src="ig-07.jpg" alt="Padel Cities — post 7" loading="lazy" />
+              <span class="cell-icon">
+                <svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="0.5" fill="rgba(255,255,255,0.9)" stroke="none"/></svg>
+              </span>
+            </a>
+          </div>
+
+          <div class="ig-cell">
+            <a href="https://www.instagram.com/padelcities" target="_blank" rel="noopener">
+              <img src="ig-08.jpg" alt="Padel Cities — post 8" loading="lazy" />
+              <span class="cell-icon">
+                <svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="0.5" fill="rgba(255,255,255,0.9)" stroke="none"/></svg>
+              </span>
+            </a>
+          </div>
+
+          <div class="ig-cell">
+            <a href="https://www.instagram.com/padelcities" target="_blank" rel="noopener">
+              <img src="ig-09.jpg" alt="Padel Cities — post 9" loading="lazy" />
+              <span class="cell-icon">
+                <svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="0.5" fill="rgba(255,255,255,0.9)" stroke="none"/></svg>
+              </span>
+            </a>
+          </div>
+
         </div>
+        <p class="ig-grid-label">
+          <a href="https://www.instagram.com/padelcities" target="_blank" rel="noopener">@padelcities</a>
+        </p>
       </div>
 
       <div class="col-content">
 
         <div class="quote-section">
           <h1 class="quote-text">Explore the world,<br>one padel city<br><em>at a time.</em></h1>
-          <p class="quote-subtext">Curating the best spots and culture on the global tour.</p>
+          <p class="quote-subtext">Curating global padel culture. Following the padel calendar and sharing the best of every city.</p>
         </div>
 
         <div class="subscription-section">
           <div class="subscription-copy">
             <p class="subscription-headline">Your next<br><strong>destination awaits.</strong></p>
-            <p class="subscription-subtext">Courts, hotels, restaurants — hand-picked from the world's best padel cities, straight to your inbox.</p>
+            <p class="subscription-subtext">Clubs, hotels, restaurants, events — hand-picked from the world's best padel cities, straight to your inbox. You can unsubscribe at any time.</p>
           </div>
           <div class="subscription-form">
             <input class="subscription-input" type="email" placeholder="your@email.com" />
             <button class="subscription-btn">Join Now</button>
           </div>
-          <!-- Honeypot: hidden from humans, bots fill this in -->
+          <p class="subscription-consent">By subscribing you agree to our <a href="terms.html" target="_blank">Terms &amp; Conditions</a> and <a href="privacy.html" target="_blank">Privacy Policy</a>.</p>
           <input type="text" name="website" id="honeypot" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0;pointer-events:none;" />
           <p class="subscription-feedback"></p>
         </div>
@@ -451,7 +701,88 @@
       </a>
     </footer>
 
+    <!-- Cookie consent banner — shown only in regions that require it -->
+    <div id="cookie-banner" role="dialog" aria-live="polite" aria-label="Cookie consent">
+      <p class="cookie-text">
+        We use cookies from Google Analytics to understand how visitors use this site.
+        No personal data is sold. &nbsp;<a href="privacy.html" target="_blank">Privacy Policy</a>
+      </p>
+      <div class="cookie-actions">
+        <button class="cookie-btn decline" id="cookie-decline">Decline</button>
+        <button class="cookie-btn accept" id="cookie-accept">Accept</button>
+      </div>
+    </div>
+
   </div>
+
+  <!-- Google Analytics — loaded only after consent is granted -->
+  <script>
+    // Regions that require a cookie consent banner under local law.
+    // EU/EEA (GDPR), UK (UK GDPR), Brazil (LGPD), South Korea, Canada (PIPEDA provinces).
+    const CONSENT_REQUIRED_COUNTRIES = new Set([
+      'AT','BE','BG','HR','CY','CZ','DK','EE','FI','FR','DE','GR','HU','IE',
+      'IT','LV','LT','LU','MT','NL','PL','PT','RO','SK','SI','ES','SE', // EU
+      'IS','LI','NO', // EEA non-EU
+      'GB',           // UK
+      'BR',           // Brazil (LGPD)
+      'KR',           // South Korea (PIPA)
+      'CA',           // Canada (PIPEDA / Quebec Law 25)
+    ]);
+
+    const CONSENT_KEY = 'pc_cookie_consent'; // localStorage key
+
+    function loadGA() {
+      // Replace G-XXXXXXXXXX with your actual GA4 Measurement ID
+      const GA_ID = 'G-E8HGP9P054';
+      const s = document.createElement('script');
+      s.src = 'https://www.googletagmanager.com/gtag/js?id=' + GA_ID;
+      s.async = true;
+      document.head.appendChild(s);
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){ dataLayer.push(arguments); }
+      window.gtag = gtag;
+      gtag('js', new Date());
+      gtag('config', GA_ID, { anonymize_ip: true });
+    }
+
+    async function initConsent() {
+      const saved = localStorage.getItem(CONSENT_KEY);
+
+      // Already decided — act immediately, no banner needed
+      if (saved === 'accepted') { loadGA(); return; }
+      if (saved === 'declined') { return; }
+
+      // No decision yet — check region
+      try {
+        const res = await fetch('https://ipapi.co/json/', { signal: AbortSignal.timeout(3000) });
+        const data = await res.json();
+        const country = (data.country_code || '').toUpperCase();
+
+        if (CONSENT_REQUIRED_COUNTRIES.has(country)) {
+          // Show banner
+          document.getElementById('cookie-banner').classList.add('visible');
+        } else {
+          // Outside regulated regions — load GA silently
+          loadGA();
+        }
+      } catch (e) {
+        // Geolocation failed — default to not loading GA (safe fallback)
+      }
+    }
+
+    document.getElementById('cookie-accept').addEventListener('click', () => {
+      localStorage.setItem(CONSENT_KEY, 'accepted');
+      document.getElementById('cookie-banner').classList.remove('visible');
+      loadGA();
+    });
+
+    document.getElementById('cookie-decline').addEventListener('click', () => {
+      localStorage.setItem(CONSENT_KEY, 'declined');
+      document.getElementById('cookie-banner').classList.remove('visible');
+    });
+
+    initConsent();
+  </script>
 
   <script>
     const btn = document.querySelector('.subscription-btn');
@@ -461,10 +792,7 @@
     const loadTime = Date.now();
 
     btn.addEventListener('click', async () => {
-      // Honeypot check — bots fill hidden fields
       if (honeypot.value.length > 0) return;
-
-      // Timing check — humans take at least 2 seconds to fill a form
       if (Date.now() - loadTime < 2000) return;
 
       const email = input.value.trim();
